@@ -14,7 +14,7 @@
     "@emotion/react": "^11.11.3",
     "@mantine/core": "^7.5.1",
     "@mantine/hooks": "^7.5.1",
-    "@mantine/modals": "^8.0.2",
+    "@mantine/modals": "^7.5.1",
     "@mantine/notifications": "^7.5.1",
     "@tabler/icons-react": "2.40.0",
     "@twa-dev/sdk": "^6.9.1",
