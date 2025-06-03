@@ -4,16 +4,16 @@ import { useState, useEffect } from 'react';
 
 // Временные данные для демонстрации
 const mockTags = [
-  { id: 1, name: 'безопасность', count: 12 },
-  { id: 2, name: 'инструкция', count: 8 },
-  { id: 3, name: 'СИЗ', count: 5 },
-  { id: 4, name: 'обучение', count: 7 },
-  { id: 5, name: 'пожарная безопасность', count: 3 },
+  { id: 1, name: 'Безопасность', count: 5 },
+  { id: 2, name: 'Оборудование', count: 3 },
+  { id: 3, name: 'Процедуры', count: 4 },
+  { id: 4, name: 'Обучение', count: 2 },
+  { id: 5, name: 'Документация', count: 6 },
 ];
 
 export default function Tags() {
   const navigate = useNavigate();
-  const [tags, setTags] = useState(mockTags);
+  const [tags] = useState(mockTags);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export default function Tags() {
               size="lg"
               variant="light"
               style={{ cursor: 'pointer' }}
-              onClick={() => navigate(`/tag/${tag.id}`)}
+              onClick={() => navigate(`/search?tag=${tag.name}`)}
             >
               {tag.name} ({tag.count})
             </Badge>

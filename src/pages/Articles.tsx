@@ -1,38 +1,41 @@
 import { Container, Title, Text, Stack, Group, Card, Badge, Breadcrumbs, Anchor } from '@mantine/core';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 // Временные данные для демонстрации
-const mockCategory = {
-  id: 1,
-  name: 'Безопасность',
-  description: 'Правила и инструкции по безопасности',
-  articles: [
-    {
-      id: 1,
-      title: 'Правила безопасности на рабочем месте',
-      date: '2024-03-20',
-      tags: ['Безопасность', 'Инструкция'],
-    },
-    {
-      id: 2,
-      title: 'Средства индивидуальной защиты',
-      date: '2024-03-19',
-      tags: ['СИЗ', 'Обучение'],
-    },
-  ],
-};
+const mockArticles = [
+  {
+    id: 1,
+    title: 'Правила безопасности на рабочем месте',
+    category: 'Безопасность',
+    date: '2024-03-20',
+    tags: ['Безопасность', 'Инструкция'],
+  },
+  {
+    id: 2,
+    title: 'Инструкция по работе с оборудованием',
+    category: 'Оборудование',
+    date: '2024-03-19',
+    tags: ['Оборудование', 'Инструкция'],
+  },
+  {
+    id: 3,
+    title: 'Новые процедуры работы',
+    category: 'Процедуры',
+    date: '2024-03-18',
+    tags: ['Процедуры', 'Документация'],
+  },
+];
 
-export default function Category() {
-  const { id } = useParams();
+export default function Articles() {
   const navigate = useNavigate();
-  const [category] = useState(mockCategory);
+  const [articles] = useState(mockArticles);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // TODO: Загрузка категории с сервера
+    // TODO: Загрузка статей с сервера
     setLoading(false);
-  }, [id]);
+  }, []);
 
   if (loading) {
     return (
@@ -47,17 +50,13 @@ export default function Category() {
       <Stack gap="xl">
         <Breadcrumbs>
           <Anchor onClick={() => navigate('/home')}>Главная</Anchor>
-          <Anchor onClick={() => navigate('/categories')}>Категории</Anchor>
-          <Text>{category.name}</Text>
+          <Text>Статьи</Text>
         </Breadcrumbs>
 
-        <Stack gap="md">
-          <Title order={1}>{category.name}</Title>
-          <Text c="dimmed">{category.description}</Text>
-        </Stack>
+        <Title order={1}>Статьи</Title>
 
         <Stack gap="md">
-          {category.articles.map((article) => (
+          {articles.map((article) => (
             <Card
               key={article.id}
               withBorder
@@ -69,6 +68,9 @@ export default function Category() {
               <Stack gap="xs">
                 <Text fw={500}>{article.title}</Text>
                 <Group gap="xs">
+                  <Badge variant="light" color="blue">
+                    {article.category}
+                  </Badge>
                   {article.tags.map((tag) => (
                     <Badge key={tag} variant="light">
                       {tag}

@@ -1,7 +1,6 @@
 import { Container, Title, Text, SimpleGrid, Card, Group, Stack, Button, Badge } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { IconSearch, IconBook, IconClock } from '@tabler/icons-react';
-import { useState, useEffect } from 'react';
+import { IconSearch, IconBook } from '@tabler/icons-react';
 
 // Временные данные для демонстрации
 const categories = [
@@ -78,12 +77,9 @@ export default function Home() {
                     <Badge variant="light" color="blue">
                       {article.category}
                     </Badge>
-                    <Group gap={4}>
-                      <IconClock size={14} />
-                      <Text size="sm" c="dimmed">
-                        {new Date(article.date).toLocaleDateString()}
-                      </Text>
-                    </Group>
+                    <Text size="sm" c="dimmed">
+                      {new Date(article.date).toLocaleDateString()}
+                    </Text>
                   </Group>
                 </Stack>
               </Card>

@@ -3,14 +3,12 @@ import { useDisclosure } from '@mantine/hooks';
 import { IconSearch, IconUser } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { WebApp } from '../config/telegram';
 
 interface AppShellProps {
   children: React.ReactNode;
-  isTelegramWebApp: boolean;
 }
 
-export function AppShell({ children, isTelegramWebApp }: AppShellProps) {
+export function AppShell({ children }: AppShellProps) {
   const [opened, { toggle }] = useDisclosure();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,41 +22,50 @@ export function AppShell({ children, isTelegramWebApp }: AppShellProps) {
 
   return (
     <MantineAppShell
-      header={{ height: isTelegramWebApp ? 0 : 60 }}
+      header={{ height: 60 }}
       navbar={{ width: 300, breakpoint: 'sm', collapsed: { mobile: !opened } }}
       padding="md"
     >
-      {!isTelegramWebApp && (
-        <MantineAppShell.Header>
-          <Group h="100%" px="md" justify="space-between">
-            <Group>
-              <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-              <Title order={3} onClick={() => navigate('/home')} style={{ cursor: 'pointer' }}>
-                TPC
-              </Title>
-            </Group>
-
-            <Group>
-              <form onSubmit={handleSearch} style={{ width: 300 }}>
-                <TextInput
-                  placeholder="Поиск..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  leftSection={<IconSearch size={16} />}
-                  size="sm"
-                />
-              </form>
-              <ActionIcon variant="subtle" onClick={() => navigate('/profile')}>
-                <IconUser size={20} />
-              </ActionIcon>
-            </Group>
+      <MantineAppShell.Header>
+        <Group h="100%" px="md" justify="space-between">
+          <Group>
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Title order={3} onClick={() => navigate('/home')} style={{ cursor: 'pointer' }}>
+              TPC Knowledge Base
+            </Title>
           </Group>
-        </MantineAppShell.Header>
-      )}
+          <form onSubmit={handleSearch} style={{ flex: 1, maxWidth: 400, margin: '0 20px' }}>
+            <TextInput
+              placeholder="Поиск..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              leftSection={<IconSearch size={16} />}
+              style={{ width: '100%' }}
+            />
+          </form>
+          <Group>
+            <ActionIcon variant="subtle" onClick={() => navigate('/login')} title="Войти">
+              <IconUser size={20} />
+            </ActionIcon>
+          </Group>
+        </Group>
+      </MantineAppShell.Header>
 
       <MantineAppShell.Navbar p="md">
         <Group>
-          <Title order={3}>Меню</Title>
+          <Title order={4}>Меню</Title>
+        </Group>
+        <Group mt="xl" gap="xs">
+          <div onClick={() => navigate('/home')} style={{ cursor: 'pointer' }}>Главная</div>
+        </Group>
+        <Group mt="md" gap="xs">
+          <div onClick={() => navigate('/categories')} style={{ cursor: 'pointer' }}>Категории</div>
+        </Group>
+        <Group mt="md" gap="xs">
+          <div onClick={() => navigate('/articles')} style={{ cursor: 'pointer' }}>Статьи</div>
+        </Group>
+        <Group mt="md" gap="xs">
+          <div onClick={() => navigate('/tags')} style={{ cursor: 'pointer' }}>Теги</div>
         </Group>
       </MantineAppShell.Navbar>
 

@@ -1,6 +1,5 @@
 import { Container, Title, Text, Stack, Group, Card, Badge, Breadcrumbs, Anchor } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
-import { IconFolder } from '@tabler/icons-react';
 import { useState, useEffect } from 'react';
 
 // Временные данные для демонстрации
@@ -8,26 +7,26 @@ const mockCategories = [
   {
     id: 1,
     name: 'Безопасность',
-    description: 'Статьи о правилах безопасности и охране труда',
-    articleCount: 15,
+    description: 'Правила и инструкции по безопасности',
+    articleCount: 5,
   },
   {
     id: 2,
-    name: 'Производство',
-    description: 'Статьи о производственных процессах и оборудовании',
-    articleCount: 23,
+    name: 'Оборудование',
+    description: 'Инструкции по работе с оборудованием',
+    articleCount: 3,
   },
   {
     id: 3,
-    name: 'Обучение',
-    description: 'Материалы для обучения и повышения квалификации',
-    articleCount: 8,
+    name: 'Процедуры',
+    description: 'Стандартные процедуры работы',
+    articleCount: 4,
   },
 ];
 
 export default function Categories() {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState(mockCategories);
+  const [categories] = useState(mockCategories);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -64,11 +63,10 @@ export default function Categories() {
               onClick={() => navigate(`/category/${category.id}`)}
             >
               <Stack gap="xs">
-                <Group gap="xs">
-                  <IconFolder size={24} color="var(--mantine-color-blue-6)" />
-                  <Title order={3}>{category.name}</Title>
-                </Group>
-                <Text c="dimmed">{category.description}</Text>
+                <Text fw={500}>{category.name}</Text>
+                <Text size="sm" c="dimmed">
+                  {category.description}
+                </Text>
                 <Group gap="xs">
                   <Badge variant="light" color="blue">
                     {category.articleCount} статей

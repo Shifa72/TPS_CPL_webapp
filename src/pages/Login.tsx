@@ -1,31 +1,23 @@
-import { Container, Title, Text, TextInput, PasswordInput, Button, Stack, Paper } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { Container, Title, Text, Stack, TextInput, PasswordInput, Button, Paper } from '@mantine/core';
 import { useState } from 'react';
-import { notifications } from '@mantine/notifications';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // TODO: Добавить реальную авторизацию
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Имитация запроса
-      notifications.show({
-        title: 'Успешно',
-        message: 'Вы успешно вошли в систему',
-        color: 'blue',
-      });
+      // TODO: Реализовать аутентификацию
+      console.log('Login attempt:', { username, password });
       navigate('/home');
     } catch (error) {
-      notifications.show({
-        title: 'Ошибка',
-        message: 'Неверный логин или пароль',
-        color: 'red',
-      });
+      console.error('Login error:', error);
     } finally {
       setLoading(false);
     }
@@ -33,44 +25,38 @@ export default function Login() {
 
   return (
     <Container size="xs" py="xl">
-      <Stack gap="xl">
-        <Stack gap="xs" ta="center">
-          <Title order={1} c="blue.6">
-            База знаний
-          </Title>
-          <Text c="dimmed" size="lg">
-            Войдите в систему для доступа к базе знаний
-          </Text>
-        </Stack>
+      <Paper withBorder p="xl" radius="md">
+        <Stack gap="xl">
+          <Stack gap="xs" ta="center">
+            <Title order={1}>Вход</Title>
+            <Text c="dimmed">Войдите в систему для доступа к документам</Text>
+          </Stack>
 
-        <Paper withBorder p="xl" radius="md">
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleSubmit}>
             <Stack gap="md">
               <TextInput
-                label="Логин"
-                placeholder="Введите ваш логин"
+                label="Имя пользователя"
+                placeholder="Введите имя пользователя"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
-                size="md"
               />
+
               <PasswordInput
                 label="Пароль"
-                placeholder="Введите ваш пароль"
+                placeholder="Введите пароль"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
-                size="md"
               />
-              <Button
-                type="submit"
-                loading={loading}
-                fullWidth
-                size="md"
-                mt="md"
-              >
+
+              <Button type="submit" loading={loading} fullWidth>
                 Войти
               </Button>
             </Stack>
           </form>
-        </Paper>
-      </Stack>
+        </Stack>
+      </Paper>
     </Container>
   );
 } 

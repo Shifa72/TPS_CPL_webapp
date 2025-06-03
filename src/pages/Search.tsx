@@ -1,103 +1,104 @@
-import { Container, Title, Text, Stack, Group, Card, Badge, TextInput, Button } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
-import { IconSearch, IconClock, IconArrowLeft } from '@tabler/icons-react';
-import { useState } from 'react';
+import { Container, Title, Text, Stack, Group, Card, Badge, Breadcrumbs, Anchor, TextInput } from "@mantine/core";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { IconSearch } from "@tabler/icons-react";
 
-// Временные данные для демонстрации
-const mockSearchResults = [
+const mockArticles = [
   {
     id: 1,
-    title: 'Правила безопасности на рабочем месте',
-    category: 'Безопасность',
-    date: '2024-03-20',
-    tags: ['безопасность', 'инструкция'],
-    excerpt: 'При работе на производстве необходимо соблюдать следующие правила безопасности...',
+    title: "Правила безопасности на рабочем месте",
+    category: "Безопасность",
+    date: "2024-03-20",
+    tags: ["Безопасность", "Инструкция"],
   },
   {
     id: 2,
-    title: 'Средства индивидуальной защиты',
-    category: 'Безопасность',
-    date: '2024-03-19',
-    tags: ['СИЗ', 'обучение'],
-    excerpt: 'К обязательным средствам защиты относятся защитные очки, перчатки...',
+    title: "Инструкция по работе с оборудованием",
+    category: "Оборудование",
+    date: "2024-03-19",
+    tags: ["Оборудование", "Инструкция"],
+  },
+  {
+    id: 3,
+    title: "Новые процедуры работы",
+    category: "Процедуры",
+    date: "2024-03-18",
+    tags: ["Процедуры", "Документация"],
   },
 ];
 
 export default function Search() {
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState('');
-  const [results, setResults] = useState(mockSearchResults);
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("q") || "");
+  const [tagFilter] = useState(searchParams.get("tag") || "");
+  const [articles] = useState(mockArticles);
+  const [loading, setLoading] = useState(true);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    // TODO: Реализовать поиск на сервере
-    console.log('Searching for:', searchQuery);
-  };
+  useEffect(() => {
+    // TODO: Поиск статей на сервере
+    setLoading(false);
+  }, [searchQuery, tagFilter]);
+
+  if (loading) {
+    return (
+      <Container size="sm" py="xl">
+        <Text>Загрузка...</Text>
+      </Container>
+    );
+  }
 
   return (
     <Container size="sm" py="xl">
       <Stack gap="xl">
-        <Group>
-          <Button
-            variant="light"
-            leftSection={<IconArrowLeft size={16} />}
-            onClick={() => navigate('/home')}
-          >
-            Назад
-          </Button>
-        </Group>
+        <Breadcrumbs>
+          <Anchor onClick={() => navigate("/home")}>Главная</Anchor>
+          <Text>Поиск</Text>
+        </Breadcrumbs>
+
+        <Title order={1}>Поиск</Title>
+
+        <TextInput
+          placeholder="Поиск..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          leftSection={<IconSearch size={16} />}
+        />
+
+        {tagFilter && (
+          <Group gap="xs">
+            <Text>Тег:</Text>
+            <Badge variant="light" color="blue">
+              {tagFilter}
+            </Badge>
+          </Group>
+        )}
 
         <Stack gap="md">
-          <Title order={2}>Поиск</Title>
-          <form onSubmit={handleSearch}>
-            <Group gap="xs">
-              <TextInput
-                placeholder="Введите поисковый запрос..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ flex: 1 }}
-                size="md"
-              />
-              <Button type="submit" leftSection={<IconSearch size={16} />}>
-                Найти
-              </Button>
-            </Group>
-          </form>
-        </Stack>
-
-        <Stack gap="md">
-          {results.map((result) => (
+          {articles.map((article) => (
             <Card
-              key={result.id}
+              key={article.id}
               withBorder
               p="md"
               radius="md"
-              style={{ cursor: 'pointer' }}
-              onClick={() => navigate(`/article/${result.id}`)}
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/article/${article.id}`)}
             >
               <Stack gap="xs">
-                <Text fw={500}>{result.title}</Text>
-                <Text size="sm" c="dimmed" lineClamp={2}>
-                  {result.excerpt}
-                </Text>
-                <Group gap="md">
+                <Text fw={500}>{article.title}</Text>
+                <Group gap="xs">
                   <Badge variant="light" color="blue">
-                    {result.category}
+                    {article.category}
                   </Badge>
-                  <Group gap={4}>
-                    <IconClock size={14} />
-                    <Text size="sm" c="dimmed">
-                      {new Date(result.date).toLocaleDateString()}
-                    </Text>
-                  </Group>
-                  <Group gap="xs">
-                    {result.tags.map((tag) => (
-                      <Badge key={tag} variant="light" color="gray">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </Group>
+                  {article.tags.map((tag) => (
+                    <Badge key={tag} variant="light">
+                      {tag}
+                    </Badge>
+                  ))}
                 </Group>
+                <Text size="sm" c="dimmed">
+                  {new Date(article.date).toLocaleDateString()}
+                </Text>
               </Stack>
             </Card>
           ))}
