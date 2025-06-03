@@ -19,10 +19,16 @@ jobs:
           cache: "npm"
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
+          npm list
 
       - name: Build
-        run: npm run build
+        run: |
+          npm run build
+          ls -la dist/
+        env:
+          NODE_ENV: production
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
